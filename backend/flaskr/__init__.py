@@ -246,12 +246,12 @@ def create_app(test_config=None):
     def get_questions():
         try:
             body = request.get_json()
-            category = body.get('category', None)
+            category = body.get('quiz_category', None)
             questions_id = body.get('previous_questions')
             print(questions_id)
             print(category)
             selection = Question.query.filter(
-                Question.category == category).all()
+                Question.category == category['id']).all()
             print(selection)
             if len(selection) == 0:
                 selection = Question.query.all()
