@@ -77,10 +77,10 @@ def create_app(test_config=None):
         try:
             selection = Question.query.order_by(Question.id).all()
             current_questions = paginate_questions(request, selection)
-            print('Current Questions', current_questions)
+            # print('Current Questions', current_questions)
             if current_questions is None or len(current_questions) == 0:
                 abort(404)
-            print('Getting')
+            # print('Getting')
             categories = Category.query.all()
             formatted_categories = {
                 category.id: category.type for category in categories}
@@ -104,7 +104,7 @@ def create_app(test_config=None):
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
         try:
-            print('deleting question_id is:', question_id)
+            # print('deleting question_id is:', question_id)
             question = Question.query.filter(
                 Question.id == question_id).one_or_none()
             if question is None:
@@ -112,7 +112,7 @@ def create_app(test_config=None):
             question.delete()
             selection = Question.query.order_by(Question.id).all()
             current_questions = paginate_questions(request, selection)
-            print('Deleting')
+            # print('Deleting')
             return jsonify({
                 'success': True,
                 'deleted': question_id,
@@ -140,7 +140,7 @@ def create_app(test_config=None):
         new_answer = body.get('answer', None)
         new_category = body.get('category', None)
         new_difficulty = body.get('difficulty', None)
-        print('adding')
+        # print('adding')
         try:
             if new_question and new_answer and new_category and new_difficulty:
                 question = Question(
@@ -148,7 +148,7 @@ def create_app(test_config=None):
                     answer=new_answer,
                     category=new_category,
                     difficulty=new_difficulty)
-                print(question.question)
+                # print(question.question)
                 question.insert()
 
                 selection = Question.query.order_by(Question.id).all()
@@ -218,9 +218,9 @@ def create_app(test_config=None):
             current_questions = paginate_questions(request, selection)
             if current_questions is None or len(current_questions) == 0:
                 abort(404)
-            print('Getting Category Questions')
-            print(current_category)
-            print(current_questions)
+            # print('Getting Category Questions')
+            # print(current_category)
+            # print(current_questions)
             return jsonify({
                 'success': True,
                 'questions': current_questions,
@@ -248,20 +248,20 @@ def create_app(test_config=None):
             body = request.get_json()
             category = body.get('quiz_category', None)
             questions_id = body.get('previous_questions')
-            print(questions_id)
-            print(category)
+            # print(questions_id)
+            print('Category: ',category)
             selection = Question.query.filter(
                 Question.category == category['id']).all()
-            print(selection)
+            print('Selection: ', selection)
             if len(selection) == 0:
                 selection = Question.query.all()
             clear_selections = []
             for q in selection:
                 if q.id not in questions_id:
                     clear_selections.append(q)
-            print(clear_selections)
+            print('Clear Questions:', clear_selections)
             question_random = random.choice(clear_selections)
-            print(question_random)
+            print('Random Question: ',question_random)
             if question_random is not None:
                 return jsonify({
                     'success': True,
