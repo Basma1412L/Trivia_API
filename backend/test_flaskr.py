@@ -9,14 +9,17 @@ from models import setup_db, Question, Category
 
 class TriviaTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
+    DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')
+    DB_USER = os.getenv('DB_USER', '')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', '')
+    DB_TEST_NAME = os.getenv('DB_NAME', 'trivia_test')
+    database_path = 'postgresql+psycopg2://{}:{}@{}/{}'.format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_TEST_NAME)
 
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "trivia_test"
-        self.database_path = "postgres://{}/{}".format(
-            'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
         self.new_question = {
@@ -27,7 +30,7 @@ class TriviaTestCase(unittest.TestCase):
         }
 
         self.quiz = {
-            'quiz_category':  {'type': 'Science', 'id': '1'},
+            'quiz_category': {'type': 'Science', 'id': '1'},
             'previous_questions': [
                 'What is the disease of 2020?',
                 'What is the loss of 2020?']}
@@ -45,7 +48,8 @@ class TriviaTestCase(unittest.TestCase):
 
     """
     TODO
-    Write at least one test for each test for successful operation and for expected errors.
+    Write at least one test for each test for successful
+    operation and for expected errors.
     """
 
     def test_success_questions_get(self):

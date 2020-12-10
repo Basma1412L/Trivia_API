@@ -26,7 +26,8 @@ def create_app(test_config=None):
     setup_db(app)
 
     '''
-  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
+  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route
+  after completing the TODOs
   '''
     CORS(app, resources=({r"/api/*": {"origins": "*"}}))
     '''
@@ -69,7 +70,8 @@ def create_app(test_config=None):
 
   TEST: At this point, when you start the application
   you should see questions and categories generated,
-  ten questions per page and pagination at the bottom of the screen for three pages.
+  ten questions per page and pagination at the bottom
+  of the screen for three pages.
   Clicking on the page numbers should update the questions.
   '''
     @app.route('/questions')
@@ -97,8 +99,8 @@ def create_app(test_config=None):
     '''
   @TODO:
   Create an endpoint to DELETE question using a question ID.
-
-  TEST: When you click the trash icon next to a question, the question will be removed.
+  TEST: When you click the trash icon next to a question,
+  the question will be removed.
   This removal will persist in the database and when you refresh the page.
   '''
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
@@ -249,7 +251,7 @@ def create_app(test_config=None):
             category = body.get('quiz_category', None)
             questions_id = body.get('previous_questions')
             # print(questions_id)
-            print('Category: ',category)
+            print('Category: ', category)
             selection = Question.query.filter(
                 Question.category == category['id']).all()
             print('Selection: ', selection)
@@ -261,7 +263,7 @@ def create_app(test_config=None):
                     clear_selections.append(q)
             print('Clear Questions:', clear_selections)
             question_random = random.choice(clear_selections)
-            print('Random Question: ',question_random)
+            print('Random Question: ', question_random)
             if question_random is not None:
                 return jsonify({
                     'success': True,
